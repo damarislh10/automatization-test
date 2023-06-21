@@ -41,16 +41,23 @@ class ConexionDB():
             self.conexion.close()
             print("Desconectado de la base de datos")
 
-    def registerLeads(self, celular, cedula):
-        datos = (celular, cedula)
+    def registerLeads(self, valores):
+        # Conectar a la base de datos si aún no está conectado
+        if not self.conexion:
+            resultado_conexion = self.conectar()
+            if not resultado_conexion["conexion"]:
+                print("hola",resultado_conexion["msg"])
+                return
 
-        sql = '''INSERT INTO `api2` (celular, cedula) VALUES (%s, %s)'''
+       # datos = (celular, cedula)
+        sql = '''INSERT IGNORE INTO `api2` (celular, cedula) VALUES (%s, %s)'''
 
         # Intentar consulta a base de datos
         try:
             cursor = self.conexion.cursor()
-            cursor.execute(sql, datos)
+            cursor.executemany(sql, valores)
             self.conexion.commit()
             cursor.close()
+            print("Inserto en la base de datos")
         except Exception as e:
-            print("Error al insertar en la base de datos:", str(e))
+            return print("Error al insertar en la base de datos:", str(e))
