@@ -50,7 +50,7 @@ class ConexionDB():
                 return
 
        # datos = (celular, cedula)
-        sql = '''INSERT INTO `api2` (celular, cedula) VALUES (%s, %s)'''
+        sql = '''INSERT IGNORE INTO `api2` (celular, cedula) VALUES (%s, %s)'''
 
         # Intentar consulta a base de datos
         try:
@@ -60,7 +60,4 @@ class ConexionDB():
             cursor.close()
             print("Inserto en la base de datos")
         except Exception as e:
-            print("Error al insertar en la base de datos:", str(e))
-            return
-        finally:
-            self.desconectar()
+            return print("Error al insertar en la base de datos:", str(e))
