@@ -8,10 +8,10 @@ else:
 
 class ConnectionDB():
     def __init__(self):
-        self.user = 'baq'
-        self.password = 'Asiste.2021'
+        self.user = ''
+        self.password = ''
         self.host = host
-        self.data_base = 'majority'
+        self.data_base = ''
         self.auth_plugin = 'mysql_native_password'
         self.connection = None
 
