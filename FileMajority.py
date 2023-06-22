@@ -1,42 +1,42 @@
 import pandas as pd
-from conexionDB import ConexionDB
+from connectionDB import ConnectionDB
 import os
 
 class FileMajority():
     def __init__(self):
         super().__init__()        
 
-        # Instanciar base de datos
-        self.base_datos = ConexionDB()
+        # To instantiate a database
+        self.data_base = ConnectionDB()
 
-        # Directorio donde se encuentran los archivos CSV
+        # The directory where the CSV files are located
         # self.directorio2 = 'C:/Users/ASUS/Documents/EmpresaAsiste/leadmayority'
-        self.directorio2 = 'C:/Users/corte/OneDrive/Documentos/EmpresaAsiste/semanaMajority/filesLeads'
-        self.archivos_csv = [archivo for archivo in os.listdir(self.directorio2) if archivo.endswith('.csv')]
+        self.directory2 = 'C:/Users/corte/OneDrive/Documentos/EmpresaAsiste/semanaMajority/filesLeads'
+        self.files_csv = [file for file in os.listdir(self.directory2) if file.endswith('.csv')]
 
-    def leer_csv(self,archivo_csv):
+    def validate_csv(self,files_csv):
             try:
-                df = pd.read_csv(archivo_csv, sep=';')
+                df = pd.read_csv(files_csv, sep=';')
            
                 return df
             except pd.errors.EmptyDataError:
-                print(f"El archivo CSV '{archivo_csv}' está vacío")
+                print(f"The CSV '{files_csv}' is empty")
                 return None
             except FileNotFoundError:
-                print(f"El archivo CSV '{archivo_csv}' no existe")
+                print(f"The CSV '{files_csv}' does not exist")
                 return None
         
 
-    def procesar_datos(self):
-            for archivo_csv in self.archivos_csv:
-                ruta_archivo = os.path.join(self.directorio2, archivo_csv)
-                df= self.leer_csv(ruta_archivo)
+    def process_data(self):
+            for file_csv in self.files_csv:
+                file_path = os.path.join(self.directory2, file_csv)
+                df= self.validate_csv(file_path)
 
                 if df is not None:
                     df = df.dropna()
-                    registros = df.to_records(index=False)
-                    valores = [(int(row['celular']), str(row['cedula'])) for row in registros]
-                    self.base_datos.registerLeads(valores)
+                    records = df.to_records(index=False)
+                    values = [(int(row['celular']), str(row['cedula'])) for row in records]
+                    self.data_base.registerLeads(values)
 
                
 
@@ -44,7 +44,7 @@ class FileMajority():
 file_majority = FileMajority()
 
 # Ejecutar el procesamiento de los datos
-file_majority.procesar_datos()
+file_majority.process_data()
 
 
      
