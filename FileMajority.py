@@ -31,12 +31,11 @@ class FileMajority():
             for archivo_csv in self.archivos_csv:
                 ruta_archivo = os.path.join(self.directorio2, archivo_csv)
                 df= self.leer_csv(ruta_archivo)
-                
+
                 if df is not None:
                     df = df.dropna()
                     registros = df.to_records(index=False)
                     valores = [(int(row['celular']), str(row['cedula'])) for row in registros]
-                    print(valores)
                     self.base_datos.registerLeads(valores)
 
                
